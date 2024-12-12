@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор стоимости заказа</title>
+    <script src="script.js" defer></script>
+    <style>
+        /* Общие стили для тела страницы */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+        }
+
+        /* Стили шапки */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 40px; /* Увеличено паддинг для большей высоты */
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Центрируем содержимое шапки */
+            position: relative;
+        }
+
+        /* Логотип */
+        .logo {
+            height: 60px; /* Увеличен размер логотипа */
+            width: 60px; /* Добавлено фиксированное значение для квадрата */
+            margin-right: 20px;
+            border-radius: 50%; /* Закругление до круга */
+            object-fit: cover; /* Обеспечивает корректное отображение изображения */
+            border: 2px solid #fff; /* Добавлена рамка */
+        }
+
+        /* Название сайта в шапке */
+        .header-title {
+            font-size: 28px; /* Увеличен размер шрифта */
+            font-weight: bold;
+        }
+
+        /* Основной контент */
+        main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center; /* Центрируем содержимое по горизонтали */
+            align-items: center; /* Центрируем содержимое по вертикали */
+        }
+
+        /* Контейнер формы */
+        .form-container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* Стили заголовка формы */
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Стили формы */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        select {
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        /* Стили для группы радиокнопок */
+        .radio-group {
+            margin-bottom: 20px;
+        }
+        .radio-group label {
+            display: inline-block;
+            margin-right: 10px;
+            font-weight: normal;
+        }
+
+        /* Стили кнопки */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF; /* Синий цвет */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Более тёмный синий при наведении */
+        }
+
+        /* Стили результата */
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Стили подвала */
+        footer {
+            background-color: #333;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+
+            .logo {
+                height: 50px;
+                width: 50px;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .header-title {
+                font-size: 22px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            footer {
+                font-size: 14px;
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header>
+        <img src="f2zaon3j.png" alt="Логотип" class="logo">
+        <div class="header-title">Калькулятор</div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <div class="form-container">
+            <h1>Калькулятор стоимости заказа</h1>
+            <form id="calculator-form">
+                <label for="quantity">Кол-во авто:</label>
+                <input type="text" id="quantity" name="quantity" required>
+
+                <div class="radio-group">
+                    <span>Тип товара:</span><br>
+                    <label>
+                        <input type="radio" name="product_type" value="type1"> Мойка авто
+                    </label>
+                    <label>
+                        <input type="radio" name="product_type" value="type2"> Замена масла
+                    </label>
+                    <label>
+                        <input type="radio" name="product_type" value="type3"> Хим.чистка
+                    </label>
+                </div>
+
+                <div id="options-container" style="display:none;">
+                    <label for="product_option">Опции (для замены масла):</label>
+                    <select id="product_option" name="product_option">
+                        <option value="base">Минеральное масло (+0 руб.)</option>
+                        <option value="premium">Синтетическое масло (+350 руб.)</option>
+                    </select>
+                </div>
+
+                <div id="property-container" style="display:none;">
+                    <label>
+                        <input type="checkbox" id="product_property" name="product_property">
+                        Премиум-очистка салона (+2500 руб.)
+                    </label>
+                </div>
+
+                <button type="button" id="calculate">Рассчитать стоимость</button>
+            </form>
+        
+            <div id="result"></div>
+        </div>
+    </main>
+
+    <!-- Подвал сайта -->
+    <footer>
+        by MEQURA
+    </footer>
+</body>
+</html>
